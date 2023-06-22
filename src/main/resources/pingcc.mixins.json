@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "package": "ymg.pwcca.pingcc.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

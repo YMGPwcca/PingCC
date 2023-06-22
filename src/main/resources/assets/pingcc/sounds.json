@@ -1,0 +1,212 @@
+{
+  "astra1": {
+    "sounds": [
+      "pingcc:astra1"
+    ]
+  },
+  "astra2": {
+    "sounds": [
+      "pingcc:astra2"
+    ]
+  },
+  "breach1": {
+    "sounds": [
+      "pingcc:breach1"
+    ]
+  },
+  "breach2": {
+    "sounds": [
+      "pingcc:breach2"
+    ]
+  },
+  "brimstone1": {
+    "sounds": [
+      "pingcc:brimstone1"
+    ]
+  },
+  "brimstone2": {
+    "sounds": [
+      "pingcc:brimstone2"
+    ]
+  },
+  "chamber1": {
+    "sounds": [
+      "pingcc:chamber1"
+    ]
+  },
+  "chamber2": {
+    "sounds": [
+      "pingcc:chamber2"
+    ]
+  },
+  "cypher1": {
+    "sounds": [
+      "pingcc:cypher1"
+    ]
+  },
+  "cypher2": {
+    "sounds": [
+      "pingcc:cypher2"
+    ]
+  },
+  "fade1": {
+    "sounds": [
+      "pingcc:fade1"
+    ]
+  },
+  "fade2": {
+    "sounds": [
+      "pingcc:fade2"
+    ]
+  },
+  "gekko1": {
+    "sounds": [
+      "pingcc:gekko1"
+    ]
+  },
+  "gekko2": {
+    "sounds": [
+      "pingcc:gekko2"
+    ]
+  },
+  "harbor1": {
+    "sounds": [
+      "pingcc:harbor1"
+    ]
+  },
+  "harbor2": {
+    "sounds": [
+      "pingcc:harbor2"
+    ]
+  },
+  "jett1": {
+    "sounds": [
+      "pingcc:jett1"
+    ]
+  },
+  "jett2": {
+    "sounds": [
+      "pingcc:jett2"
+    ]
+  },
+  "kayo1": {
+    "sounds": [
+      "pingcc:kayo1"
+    ]
+  },
+  "kayo2": {
+    "sounds": [
+      "pingcc:kayo2"
+    ]
+  },
+  "killjoy1": {
+    "sounds": [
+      "pingcc:killjoy1"
+    ]
+  },
+  "killjoy2": {
+    "sounds": [
+      "pingcc:killjoy2"
+    ]
+  },
+  "neon1": {
+    "sounds": [
+      "pingcc:neon1"
+    ]
+  },
+  "neon2": {
+    "sounds": [
+      "pingcc:neon2"
+    ]
+  },
+  "omen1": {
+    "sounds": [
+      "pingcc:omen1"
+    ]
+  },
+  "omen2": {
+    "sounds": [
+      "pingcc:omen2"
+    ]
+  },
+  "phoenix1": {
+    "sounds": [
+      "pingcc:phoenix1"
+    ]
+  },
+  "phoenix2": {
+    "sounds": [
+      "pingcc:phoenix2"
+    ]
+  },
+  "raze1": {
+    "sounds": [
+      "pingcc:raze1"
+    ]
+  },
+  "raze2": {
+    "sounds": [
+      "pingcc:raze2"
+    ]
+  },
+  "reyna1": {
+    "sounds": [
+      "pingcc:reyna1"
+    ]
+  },
+  "reyna2": {
+    "sounds": [
+      "pingcc:reyna2"
+    ]
+  },
+  "sage1": {
+    "sounds": [
+      "pingcc:sage1"
+    ]
+  },
+  "sage2": {
+    "sounds": [
+      "pingcc:sage2"
+    ]
+  },
+  "skye1": {
+    "sounds": [
+      "pingcc:skye1"
+    ]
+  },
+  "skye2": {
+    "sounds": [
+      "pingcc:skye2"
+    ]
+  },
+  "sova1": {
+    "sounds": [
+      "pingcc:sova1"
+    ]
+  },
+  "sova2": {
+    "sounds": [
+      "pingcc:sova2"
+    ]
+  },
+  "viper1": {
+    "sounds": [
+      "pingcc:viper1"
+    ]
+  },
+  "viper2": {
+    "sounds": [
+      "pingcc:viper2"
+    ]
+  },
+  "yoru1": {
+    "sounds": [
+      "pingcc:yoru1"
+    ]
+  },
+  "yoru2": {
+    "sounds": [
+      "pingcc:yoru2"
+    ]
+  }
+}

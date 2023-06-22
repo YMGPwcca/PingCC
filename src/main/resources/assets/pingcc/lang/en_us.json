@@ -1,0 +1,196 @@
+{
+  "pingcc.name": "PingCC",
+  "text.config.pingcc-config.title": "PingCC Config",
+
+  "text.config.pingcc-config.category.vision": "Vision",
+  "text.config.pingcc-config.option.vision.pingColor": "Ping Color",
+  "text.config.pingcc-config.enum.colors.dark_blue": { "text": "█", "color": "#0000AA" },
+  "text.config.pingcc-config.enum.colors.dark_green": { "text": "█", "color": "#00AA00" },
+  "text.config.pingcc-config.enum.colors.dark_aqua": { "text": "█", "color": "#00AAAA" },
+  "text.config.pingcc-config.enum.colors.dark_red": { "text": "█", "color": "#AA0000" },
+  "text.config.pingcc-config.enum.colors.dark_purple": { "text": "█", "color": "#AA00AA" },
+  "text.config.pingcc-config.enum.colors.dark_gray": { "text": "█", "color": "#555555" },
+  "text.config.pingcc-config.enum.colors.gold": { "text": "█", "color": "#FFAA00" },
+  "text.config.pingcc-config.enum.colors.gray": { "text": "█", "color": "#AAAAAA" },
+  "text.config.pingcc-config.enum.colors.blue": { "text": "█", "color": "#5555FF" },
+  "text.config.pingcc-config.enum.colors.green": { "text": "█", "color": "#55FF55" },
+  "text.config.pingcc-config.enum.colors.aqua": { "text": "█", "color": "#55FFFF" },
+  "text.config.pingcc-config.enum.colors.red": { "text": "█", "color": "#FF5555" },
+  "text.config.pingcc-config.enum.colors.light_purple": { "text": "█", "color": "#FF55FF" },
+  "text.config.pingcc-config.enum.colors.yellow": { "text": "█", "color": "#FFFF55" },
+  "text.config.pingcc-config.enum.colors.white": { "text": "█", "color": "#FFFFFF" },
+  "text.config.pingcc-config.option.vision.getBlockInfo": "Get block info",
+  "text.config.pingcc-config.option.vision.getBlockInfo.tooltip": "Get block name and its position when looking at the ping",
+  "text.config.pingcc-config.option.vision.getEntityInfo": "Get entity info",
+  "text.config.pingcc-config.option.vision.getEntityInfo.tooltip": "Get entity name and its position when looking at the ping",
+
+
+  "text.config.pingcc-config.category.audio": "Audio",
+  "text.config.pingcc-config.option.audio.pingVolume": "Ping Volume",
+  "text.config.pingcc-config.option.audio.agent": "Select an agent",
+  "text.config.pingcc-config.enum.agents.astra": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDCAB", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Astra"
+  ],
+  "text.config.pingcc-config.enum.agents.breach": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDDBE", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Breach"
+  ],
+  "text.config.pingcc-config.enum.agents.brimstone": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83C\uDF51", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Brimstone"
+  ],
+  "text.config.pingcc-config.enum.agents.chamber": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDD56", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Chamber"
+  ],
+  "text.config.pingcc-config.enum.agents.cypher": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDCF8", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Cypher"
+  ],
+  "text.config.pingcc-config.enum.agents.fade": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDDCF", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Fade"
+  ],
+  "text.config.pingcc-config.enum.agents.gekko": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDD8E", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Gekko"
+  ],
+  "text.config.pingcc-config.enum.agents.harbor": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83C\uDF0A", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Harbor"
+  ],
+  "text.config.pingcc-config.enum.agents.jett": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDCA8", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Jett"
+  ],
+  "text.config.pingcc-config.enum.agents.kayo": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDD2B", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " KAY/O"
+  ],
+  "text.config.pingcc-config.enum.agents.killjoy": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDD16", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Killjoy"
+  ],
+  "text.config.pingcc-config.enum.agents.neon": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDD0B", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Neon"
+  ],
+  "text.config.pingcc-config.enum.agents.omen": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDC08", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Omen"
+  ],
+  "text.config.pingcc-config.enum.agents.phoenix": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDD25", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Phoenix"
+  ],
+  "text.config.pingcc-config.enum.agents.raze": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83C\uDF86", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Raze"
+  ],
+  "text.config.pingcc-config.enum.agents.reyna": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDC51", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Reyna"
+  ],
+  "text.config.pingcc-config.enum.agents.sage": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDDCA", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Sage"
+  ],
+  "text.config.pingcc-config.enum.agents.skye": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDC24", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Skye"
+  ],
+  "text.config.pingcc-config.enum.agents.sova": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83C\uDFF9", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Sova"
+  ],
+  "text.config.pingcc-config.enum.agents.viper": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDC80", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Viper"
+  ],
+  "text.config.pingcc-config.enum.agents.yoru": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDC79", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Yoru"
+  ],
+
+  "text.message.ping": " just pinged ",
+  "text.message.ping.you": "you",
+  "text.config.pingcc-config.boolean.enabled": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "✔", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Enabled"
+  ],
+  "text.config.pingcc-config.boolean.disabled": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "❌", "color": "#EB1D36" },
+    { "text": "]", "color": "gray" },
+    " Disabled"
+  ],
+  "pingcc.key.mark-location": "Ping"
+}
