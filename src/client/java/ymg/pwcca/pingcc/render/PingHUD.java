@@ -25,14 +25,13 @@ import ymg.pwcca.pingcc.util.PingData;
 
 public class PingHUD implements HudRenderCallback {
 
-  private static final Identifier PING_STANDARD = new Identifier("pingcc", "textures/ping_standard.png");
+  private static final Identifier PING_ICON = new Identifier("pingcc", "textures/ping_icon.png");
 
   @Override
   public void onHudRender(DrawContext context, float tickDelta) {
     MinecraftClient client = MinecraftClient.getInstance();
     MatrixStack stack = context.getMatrices();
     double uiScale = client.getWindow().getScaleFactor();
-    assert client.player != null;
     Vec3d cameraPosVec = client.player.getCameraPosVec(tickDelta);
 
     for (PingData ping : PingCCClient.pingList) {
@@ -55,12 +54,11 @@ public class PingHUD implements HudRenderCallback {
       Formatting pingColor = ping.pingColor;
       Color toRGB = Color.ofRgb(pingColor.getColorValue());
       boolean isTooDark = isColorTooDark(pingColor);
-      int shadow = ColorHelper.Argb.getArgb(255, 255, 255, 255);
+      int shadow = ColorHelper.Argb.getArgb(200, 255, 255, 255);
 
       // probably pos data
       double distance = cameraPosVec.distanceTo(ping.pos);
       Vector4f screenPos = screenPosWindowed(ping.screenPos, client.getWindow());
-      boolean onScreen = screenPos == ping.screenPos;
 
       // centralize ping
       stack.translate(screenPos.x / uiScale, screenPos.y / uiScale, 0); // stack to ping center
@@ -70,20 +68,18 @@ public class PingHUD implements HudRenderCallback {
       // draw ping icon
       RenderSystem.setShader(GameRenderer::getPositionTexProgram);
       RenderSystem.setShaderColor(toRGB.red(), toRGB.green(), toRGB.blue(), toRGB.alpha());
-      context.drawTexture(PING_STANDARD, -4, -2, 0, 0, 8, 8, 8, 8);
+      context.drawTexture(PING_ICON, -4, -2, 0, 0, 8, 8, 8, 8);
 
       // skip drawing text if ping is not on screen
-      if (!onScreen) {
+      if (screenPos != ping.screenPos) {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         stack.pop();
         continue;
       }
 
       // display entity/block name and its position when the player is looking at the ping, otherwise display ping sender name
-      boolean isCrosshairInlineWithPing = isScreenCenter(ping.screenPos, 10, client.getWindow());
-      boolean isAbleToShowEntityOrBlockName = isCrosshairInlineWithPing && (PingCCClient.CONFIG.vision.getBlockInfo() || PingCCClient.CONFIG.vision.getEntityInfo());
+      boolean isCrosshairInlineWithPing = isScreenCenter(ping.screenPos, client.getWindow());
 
-      // NEED TO FIX THIS
       String entityOrBlockName = null, entityOrBlockPos = null;
       if (ping.pingBlock != null && PingCCClient.CONFIG.vision.getBlockInfo()) {
         entityOrBlockName = client.world.getBlockState(ping.pingBlock.getBlockPos()).getBlock().getTranslationKey();
@@ -94,7 +90,7 @@ public class PingHUD implements HudRenderCallback {
         entityOrBlockPos = entity != null ? entity.getBlockPos().toShortString() : String.format("%dm", (int) distance);
       }
 
-      String nameText = isAbleToShowEntityOrBlockName ? Text.translatable(entityOrBlockName).getString() : ping.senderName;
+      String nameText = isCrosshairInlineWithPing && entityOrBlockName != null ? Text.translatable(entityOrBlockName).getString() : ping.senderName;
       int nameTextWidth = client.textRenderer.getWidth(nameText);
       stack.scale(0.65f, 0.65f, 1f);
       stack.translate(-nameTextWidth / 2f, -14f, 0);
@@ -110,7 +106,7 @@ public class PingHUD implements HudRenderCallback {
       stack.translate(nameTextWidth / 2f, 0, 0);
 
       // distance text
-      String distanceText = isAbleToShowEntityOrBlockName ? entityOrBlockPos : String.format("%dm", (int) distance);
+      String distanceText = isCrosshairInlineWithPing && entityOrBlockPos != null ? entityOrBlockPos : String.format("%dm", (int) distance);
       int distanceTextWidth = client.textRenderer.getWidth(distanceText);
       stack.translate(-distanceTextWidth / 2f, 27f, 0);
 
@@ -146,9 +142,10 @@ public class PingHUD implements HudRenderCallback {
     return newPos != null ? newPos : screenPos;
   }
 
-  private boolean isScreenCenter(Vector4f screenPos, int margin, Window window) {
+  private boolean isScreenCenter(Vector4f screenPos, Window window) {
     int width = window.getWidth();
     int height = window.getHeight();
+    int margin = 15;
 
     boolean isHorizontalCenter = screenPos.x > (width / 2f - margin) && screenPos.x < (width / 2f + margin);
     boolean isVerticalCenter = screenPos.y > (height / 2f - margin) && screenPos.y < (height / 2f + margin);

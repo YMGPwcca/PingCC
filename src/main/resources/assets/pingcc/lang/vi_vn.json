@@ -20,9 +20,9 @@
   "text.config.pingcc-config.enum.colors.yellow": { "text": "█", "color": "#FFFF55" },
   "text.config.pingcc-config.enum.colors.white": { "text": "█", "color": "#FFFFFF" },
   "text.config.pingcc-config.option.vision.getBlockInfo": "Nhận thông tin khối",
-  "text.config.pingcc-config.option.vision.getBlockInfo.tooltip": "Nhận tên khối và vị trí của nó khi nhìn vào ping",
+  "text.config.pingcc-config.option.vision.getBlockInfo.tooltip": "Nhận tên và vị trí của khối khi nhìn vào ping",
   "text.config.pingcc-config.option.vision.getEntityInfo": "Nhận thông tin thực thể",
-  "text.config.pingcc-config.option.vision.getEntityInfo.tooltip": "Nhận tên thực thể và vị trí của nó khi nhìn vào ping",
+  "text.config.pingcc-config.option.vision.getEntityInfo.tooltip": "Nhận tên và vị trí của thực thể khi nhìn vào ping",
 
 
   "text.config.pingcc-config.category.audio": "Nghe",
