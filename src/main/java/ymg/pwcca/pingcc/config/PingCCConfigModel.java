@@ -15,6 +15,7 @@ public class PingCCConfigModel {
     public Colors pingColor = Colors.WHITE;
     public boolean getBlockInfo = true;
     public boolean getEntityInfo = true;
+    public boolean showEntityOutline = true;
   }
 
   @Nest

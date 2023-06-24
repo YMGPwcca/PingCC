@@ -16,6 +16,7 @@ public class PingCCConfig extends ConfigWrapper<ymg.pwcca.pingcc.config.PingCCCo
     private final Option<ymg.pwcca.pingcc.config.PingCCConfigModel.Colors> vision_pingColor = this.optionForKey(this.keys.vision_pingColor);
     private final Option<java.lang.Boolean> vision_getBlockInfo = this.optionForKey(this.keys.vision_getBlockInfo);
     private final Option<java.lang.Boolean> vision_getEntityInfo = this.optionForKey(this.keys.vision_getEntityInfo);
+    private final Option<java.lang.Boolean> vision_showEntityOutline = this.optionForKey(this.keys.vision_showEntityOutline);
     private final Option<java.lang.Integer> audio_pingVolume = this.optionForKey(this.keys.audio_pingVolume);
     private final Option<ymg.pwcca.pingcc.config.PingCCConfigModel.Agents> audio_agent = this.optionForKey(this.keys.audio_agent);
 
@@ -65,6 +66,14 @@ public class PingCCConfig extends ConfigWrapper<ymg.pwcca.pingcc.config.PingCCCo
             vision_getEntityInfo.set(value);
         }
 
+        public boolean showEntityOutline() {
+            return vision_showEntityOutline.value();
+        }
+
+        public void showEntityOutline(boolean value) {
+            vision_showEntityOutline.set(value);
+        }
+
     }
     public final Audio_ audio = new Audio_();
     public class Audio_ implements Audio {
@@ -92,6 +101,8 @@ public class PingCCConfig extends ConfigWrapper<ymg.pwcca.pingcc.config.PingCCCo
         void getBlockInfo(boolean value);
         boolean getEntityInfo();
         void getEntityInfo(boolean value);
+        boolean showEntityOutline();
+        void showEntityOutline(boolean value);
     }
     public interface Audio {
         int pingVolume();
@@ -103,6 +114,7 @@ public class PingCCConfig extends ConfigWrapper<ymg.pwcca.pingcc.config.PingCCCo
         public final Option.Key vision_pingColor = new Option.Key("vision.pingColor");
         public final Option.Key vision_getBlockInfo = new Option.Key("vision.getBlockInfo");
         public final Option.Key vision_getEntityInfo = new Option.Key("vision.getEntityInfo");
+        public final Option.Key vision_showEntityOutline = new Option.Key("vision.showEntityOutline");
         public final Option.Key audio_pingVolume = new Option.Key("audio.pingVolume");
         public final Option.Key audio_agent = new Option.Key("audio.agent");
     }

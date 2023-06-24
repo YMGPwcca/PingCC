@@ -52,7 +52,7 @@ public class PingHUD implements HudRenderCallback {
 
       // ping information
       Formatting pingColor = ping.pingColor;
-      Color toRGB = Color.ofRgb(pingColor.getColorValue());
+      Color toColorObject = Color.ofRgb(pingColor.getColorValue());
       boolean isTooDark = isColorTooDark(pingColor);
       int shadow = ColorHelper.Argb.getArgb(200, 255, 255, 255);
 
@@ -67,7 +67,7 @@ public class PingHUD implements HudRenderCallback {
 
       // draw ping icon
       RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-      RenderSystem.setShaderColor(toRGB.red(), toRGB.green(), toRGB.blue(), toRGB.alpha());
+      RenderSystem.setShaderColor(toColorObject.red(), toColorObject.green(), toColorObject.blue(), toColorObject.alpha());
       context.drawTexture(PING_ICON, -4, -2, 0, 0, 8, 8, 8, 8);
 
       // skip drawing text if ping is not on screen
@@ -101,7 +101,7 @@ public class PingHUD implements HudRenderCallback {
       context.fill(-2, -2, nameTextWidth + 1, client.textRenderer.fontHeight, shadow);
 
       // set the actual username text
-      RenderSystem.setShaderColor(toRGB.red(), toRGB.green(), toRGB.blue(), toRGB.alpha());
+      RenderSystem.setShaderColor(toColorObject.red(), toColorObject.green(), toColorObject.blue(), toColorObject.alpha());
       context.drawText(client.textRenderer, nameText, 0, 0, -1, false);
       stack.translate(nameTextWidth / 2f, 0, 0);
 
@@ -116,7 +116,7 @@ public class PingHUD implements HudRenderCallback {
       context.fill(-2, -2, distanceTextWidth + 1, client.textRenderer.fontHeight, shadow);
 
       // set the actual distance text
-      RenderSystem.setShaderColor(toRGB.red(), toRGB.green(), toRGB.blue(), toRGB.alpha());
+      RenderSystem.setShaderColor(toColorObject.red(), toColorObject.green(), toColorObject.blue(), toColorObject.alpha());
       context.drawText(client.textRenderer, distanceText, 0, 0, -1, false);
       stack.translate(distanceTextWidth / 2f, 0, 0);
 

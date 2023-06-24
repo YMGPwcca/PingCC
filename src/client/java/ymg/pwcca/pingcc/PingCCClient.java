@@ -8,8 +8,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -19,23 +17,17 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import ymg.pwcca.pingcc.config.PingCCConfig;
@@ -47,8 +39,6 @@ import ymg.pwcca.pingcc.util.PingData;
 import ymg.pwcca.pingcc.util.RayCasting;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class PingCCClient implements ClientModInitializer {
 
@@ -137,13 +127,13 @@ public class PingCCClient implements ClientModInitializer {
     packet.writeDouble(hitResult.getPos().y);
     packet.writeDouble(hitResult.getPos().z);
 
-    if (hitResult instanceof EntityHitResult) {
+    if (hitResult.getType() == HitResult.Type.ENTITY) {
       packet.writeInt(1);
       packet.writeUuid(((EntityHitResult) hitResult).getEntity().getUuid());
-    } else if (hitResult instanceof BlockHitResult) {
+    } else {
       packet.writeInt(2);
       packet.writeBlockHitResult((BlockHitResult) hitResult);
-    } else packet.writeInt(0);
+    }
 
     ClientPlayNetworking.send(PingCC.CLIENT_TO_SERVER, packet);
   }
@@ -202,6 +192,6 @@ public class PingCCClient implements ClientModInitializer {
       ping.aliveTime = Math.toIntExact(world.getTime() - ping.spawnTime);
     }
 
-    pingList.removeIf(p -> p.aliveTime > 5 * 20);
+    pingList.removeIf(p -> p.aliveTime > 5 * 20); // 5 seconds * 20tick
   }
 }

@@ -23,6 +23,8 @@
   "text.config.pingcc-config.option.vision.getBlockInfo.tooltip": "Get block name and its position when looking at the ping",
   "text.config.pingcc-config.option.vision.getEntityInfo": "Get entity info",
   "text.config.pingcc-config.option.vision.getEntityInfo.tooltip": "Get entity name and its position when looking at the ping",
+  "text.config.pingcc-config.option.vision.showEntityOutline": "Show entity outline",
+  "text.config.pingcc-config.option.vision.showEntityOutline.tooltip": "Show entity outline when you are closer than 64 blocks from it",
 
 
   "text.config.pingcc-config.category.audio": "Audio",
