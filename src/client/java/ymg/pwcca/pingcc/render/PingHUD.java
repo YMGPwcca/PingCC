@@ -35,8 +35,9 @@ public class PingHUD implements HudRenderCallback {
     Vec3d cameraPosVec = client.player.getCameraPosVec(tickDelta);
 
     for (PingData ping : PingCCClient.pingList) {
-      PlayerEntity player = (PlayerEntity) MinecraftClient.getInstance().cameraEntity;
+      if (ping.screenPos == null) continue;
 
+      PlayerEntity player = (PlayerEntity) MinecraftClient.getInstance().cameraEntity;
       if (ping.pingEntity != null && ping.pingEntity.equals(player.getUuid())) {
         player.sendMessage(
             MutableText.of(TextContent.EMPTY)
