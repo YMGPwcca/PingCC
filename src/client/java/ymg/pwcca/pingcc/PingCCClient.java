@@ -160,7 +160,8 @@ public class PingCCClient implements ClientModInitializer {
 
         packet.writeInt(2);
         packet.writeBlockHitResult((BlockHitResult) hitResult);
-        packet.writeString(blockEntity instanceof BannerBlockEntity ? ((BannerBlockEntity) blockEntity).getCustomName().getString() : block.getTranslationKey());
+        if (blockEntity instanceof BannerBlockEntity && ((BannerBlockEntity) blockEntity).hasCustomName()) packet.writeString(Objects.requireNonNull(((BannerBlockEntity) blockEntity).getCustomName()).getString());
+        else packet.writeString(block.getTranslationKey());
       }
       else {
         packet.writeInt(3);
