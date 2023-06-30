@@ -18,17 +18,21 @@ public class PingData {
   public Vector4f screenPos;
   public UUID pingEntity;
   public BlockHitResult pingBlock;
+  public Vec3d pingInanimateEntity;
+  public String name;
   public ItemStack itemStack;
   public Integer spawnTime;
   public Integer aliveTime;
 
-  public PingData(String senderName, Formatting color, Agents agent, Vec3d pos, UUID pingEntity, BlockHitResult pingBlock, long spawnTime) {
+  public PingData(String senderName, Formatting color, Agents agent, Vec3d pos, UUID pingEntity, BlockHitResult pingBlock, Vec3d pingInanimateEntity, String name, long spawnTime) {
     this.senderName = senderName;
     this.pingColor = color;
     this.agent = agent;
     this.pos = pos;
     this.pingEntity = pingEntity;
     this.pingBlock = pingBlock;
+    this.pingInanimateEntity = pingInanimateEntity;
+    this.name = name;
     this.spawnTime = (int) spawnTime;
   }
 }

@@ -37,21 +37,16 @@ public class PingHUD implements HudRenderCallback {
     for (PingData ping : PingCCClient.pingList) {
       if (ping.screenPos == null) continue;
 
-      PlayerEntity player = (PlayerEntity) MinecraftClient.getInstance().cameraEntity;
+      PlayerEntity player = MinecraftClient.getInstance().player;
       if (ping.pingEntity != null && ping.pingEntity.equals(player.getUuid())) {
-        player.sendMessage(
-            MutableText.of(TextContent.EMPTY)
-                .append(Text.literal(ping.senderName).formatted(ping.pingColor))
-                .append(Text.translatable("text.message.ping"))
-                .append(Text.translatable("text.message.ping.you")),
-            true
-        );
+        player.sendMessage(MutableText.of(TextContent.EMPTY).append(Text.literal(ping.senderName).formatted(ping.pingColor)).append(Text.translatable("text.message.ping"))
+            .append(Text.translatable("text.message.ping.you")), true);
         continue;
       }
 
       stack.push();
 
-      // ping information
+      // ping color information
       Formatting pingColor = ping.pingColor;
       Color toColorObject = Color.ofRgb(pingColor.getColorValue());
       boolean isTooDark = isColorTooDark(pingColor);
@@ -83,12 +78,18 @@ public class PingHUD implements HudRenderCallback {
 
       String entityOrBlockName = null, entityOrBlockPos = null;
       if (ping.pingBlock != null && PingCCClient.CONFIG.vision.getBlockInfo()) {
-        entityOrBlockName = client.world.getBlockState(ping.pingBlock.getBlockPos()).getBlock().getTranslationKey();
+        entityOrBlockName = ping.name;
         entityOrBlockPos = ping.pingBlock.getBlockPos().toShortString();
-      } else if (ping.pingBlock == null && PingCCClient.CONFIG.vision.getEntityInfo()) {
+      }
+      else if (ping.pingEntity != null && PingCCClient.CONFIG.vision.getEntityInfo()) {
         Entity entity = Iterables.tryFind(client.world.getEntities(), e -> e.getUuid().equals(ping.pingEntity)).orNull();
-        entityOrBlockName = entity != null ? entity.getName().getString() : Text.translatable(Blocks.AIR.getTranslationKey()).getString();
+        entityOrBlockName = entity != null ? ping.name : Text.translatable(Blocks.AIR.getTranslationKey()).getString();
         entityOrBlockPos = entity != null ? entity.getBlockPos().toShortString() : String.format("%dm", (int) distance);
+      }
+      else if (ping.pingInanimateEntity != null && PingCCClient.CONFIG.vision.getEntityInfo()) {
+        entityOrBlockName = ping.name;
+        Vec3d pos = ping.pingInanimateEntity;
+        entityOrBlockPos = castDoubleToInt(pos.getX()) + ", " + castDoubleToInt(pos.getY()) + ", " + castDoubleToInt(pos.getZ());
       }
 
       String nameText = isCrosshairInlineWithPing && entityOrBlockName != null ? Text.translatable(entityOrBlockName).getString() : ping.senderName;
@@ -162,5 +163,12 @@ public class PingHUD implements HudRenderCallback {
 
     double luma = (0.2126 * red) + (0.7152 * green) + (0.0722 * blue);
     return luma < 100;
+  }
+
+  private int castDoubleToInt(double d) {
+    String dS = String.valueOf(d);
+    int index = dS.indexOf(".") + 1;
+    if (Integer.parseInt(dS.substring(index, index + 1)) > 5) return (int) Math.round(d);
+    return (int) d;
   }
 }
