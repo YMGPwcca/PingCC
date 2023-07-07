@@ -92,7 +92,7 @@ public class PingHUD implements HudRenderCallback {
         entityOrBlockPos = castDoubleToInt(pos.getX()) + ", " + castDoubleToInt(pos.getY()) + ", " + castDoubleToInt(pos.getZ());
       }
 
-      String nameText = isCrosshairInlineWithPing && entityOrBlockName != null ? Text.translatable(entityOrBlockName).getString() : ping.senderName;
+      String nameText = isCrosshairInlineWithPing && entityOrBlockName != null ? ping.name : ping.senderName;
       int nameTextWidth = client.textRenderer.getWidth(nameText);
       stack.scale(0.65f, 0.65f, 1f);
       stack.translate(-nameTextWidth / 2f, -14f, 0);

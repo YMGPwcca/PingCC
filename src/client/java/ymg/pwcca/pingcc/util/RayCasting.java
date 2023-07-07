@@ -45,19 +45,15 @@ public class RayCasting {
 
     Vec3d rayStartVec = cameraEnt.getCameraPosVec(tickDelta);
     Vec3d rayEndVec = rayStartVec.add(direction.multiply(maxDistance));
-    Box boundingBox = cameraEnt.getBoundingBox()
-        .stretch(cameraEnt.getRotationVec(1.0f).multiply(maxDistance))
-        .expand(1.0, 1.0, 1.0);
+    Box boundingBox = cameraEnt.getBoundingBox().stretch(cameraEnt.getRotationVec(1.0f).multiply(maxDistance)).expand(1.0, 1.0, 1.0);
 
-    BlockHitResult blockHitResult = cameraEnt.getWorld().raycast(
-        new RaycastContext(
-            rayStartVec,
-            rayEndVec,
-            hitOnlySolid ? RaycastContext.ShapeType.COLLIDER : RaycastContext.ShapeType.OUTLINE,
-            hitFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE,
-            cameraEnt
-        )
-    );
+    BlockHitResult blockHitResult = cameraEnt.getWorld().raycast(new RaycastContext(
+        rayStartVec,
+        rayEndVec,
+        hitOnlySolid ? RaycastContext.ShapeType.COLLIDER : RaycastContext.ShapeType.OUTLINE,
+        hitFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE,
+        cameraEnt
+    ));
 
     EntityHitResult entityHitResult = traceEntity(
         cameraEnt,
@@ -67,9 +63,7 @@ public class RayCasting {
         targetEntity -> !targetEntity.isSpectator() && (targetEntity instanceof LivingEntity || targetEntity instanceof ItemEntity)
     );
 
-    if (entityHitResult == null || rayStartVec.squaredDistanceTo(entityHitResult.getPos()) > rayStartVec.squaredDistanceTo(blockHitResult.getPos()))
-      return blockHitResult;
-    else
-      return entityHitResult;
+    if (entityHitResult == null || rayStartVec.squaredDistanceTo(entityHitResult.getPos()) > rayStartVec.squaredDistanceTo(blockHitResult.getPos())) return blockHitResult;
+    else return entityHitResult;
   }
 }
