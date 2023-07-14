@@ -49,6 +49,16 @@
       "pingcc:cypher2"
     ]
   },
+  "deadlock1": {
+    "sounds": [
+      "pingcc:deadlock1"
+    ]
+  },
+  "deadlock2": {
+    "sounds": [
+      "pingcc:deadlock2"
+    ]
+  },
   "fade1": {
     "sounds": [
       "pingcc:fade1"

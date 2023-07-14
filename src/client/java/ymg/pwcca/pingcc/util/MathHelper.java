@@ -13,9 +13,7 @@ public class MathHelper {
     Window wnd = MinecraftClient.getInstance().getWindow();
 
     Quaternionf quaternion = new Quaternionf(in3D.x, in3D.y, in3D.z, 1f);
-
     Quaternionf result = multiply(projectionMatrix, multiply(modelViewMatrix, quaternion));
-
     Quaternionf screenCoords = toScreen(result);
 
     float x = screenCoords.x * wnd.getWidth();
@@ -36,8 +34,7 @@ public class MathHelper {
   }
 
   public static Quaternionf toScreen(Quaternionf q) {
-    var newW = 1f / q.w * 0.5f;
-
+    float newW = 1f / q.w * 0.5f;
     return new Quaternionf(q.x * newW + 0.5f, q.y * newW + 0.5f, q.z * newW + 0.5f, newW);
   }
 }

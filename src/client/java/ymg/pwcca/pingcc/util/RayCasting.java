@@ -1,15 +1,17 @@
 package ymg.pwcca.pingcc.util;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
+import net.minecraft.world.World;
+import ymg.pwcca.pingcc.PingCCClient;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -21,7 +23,7 @@ public class RayCasting {
     EntityHitResult minHitResult = null;
 
     for (Entity ent : entity.getWorld().getOtherEntities(entity, box, predicate)) {
-      Box targetBoundingBox = ent.getBoundingBox().expand(ent.getTargetingMargin()).expand(0.25);
+      Box targetBoundingBox = PingCCClient.canOutlineEntity(ent) ? ent.getBoundingBox().expand(0.25d) : ent.getBoundingBox();
       Optional<Vec3d> hitPos = targetBoundingBox.raycast(min, max);
 
       if (hitPos.isEmpty()) continue;
@@ -55,15 +57,30 @@ public class RayCasting {
         cameraEnt
     ));
 
+    if (isGrass(blockHitResult) && PingCCClient.CONFIG.general.pingThruGrass())
+      blockHitResult = cameraEnt.getWorld().raycast(new RaycastContext(
+          rayStartVec,
+          rayEndVec,
+          RaycastContext.ShapeType.COLLIDER,
+          hitFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE,
+          cameraEnt
+      ));
+
     EntityHitResult entityHitResult = traceEntity(
         cameraEnt,
         rayStartVec,
         rayEndVec,
         boundingBox,
-        targetEntity -> !targetEntity.isSpectator() && (targetEntity instanceof LivingEntity || targetEntity instanceof ItemEntity)
+        targetEntity -> !targetEntity.isSpectator()
     );
 
-    if (entityHitResult == null || rayStartVec.squaredDistanceTo(entityHitResult.getPos()) > rayStartVec.squaredDistanceTo(blockHitResult.getPos())) return blockHitResult;
+    if (entityHitResult == null || rayStartVec.squaredDistanceTo(entityHitResult.getPos()) >= rayStartVec.squaredDistanceTo(blockHitResult.getPos())) return blockHitResult;
     else return entityHitResult;
+  }
+
+  private static boolean isGrass(BlockHitResult blockHitResult) {
+    World world = MinecraftClient.getInstance().world;
+    BlockPos pos = blockHitResult.getBlockPos();
+    return world.getBlockState(pos).isOf(Blocks.TALL_GRASS) || world.getBlockState(pos).isOf(Blocks.GRASS);
   }
 }

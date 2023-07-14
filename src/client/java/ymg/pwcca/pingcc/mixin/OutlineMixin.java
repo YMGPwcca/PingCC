@@ -30,8 +30,7 @@ public abstract class OutlineMixin {
           Entity ent = Iterables.tryFind(world.getEntities(), e -> e.getUuid().equals(ping.pingEntity)).orNull();
           Vec3d cameraPosVec = MinecraftClient.getInstance().player.getCameraPosVec(this.getTickDelta());
 
-          if (ent != null && entity.getUuid().equals(ent.getUuid()) && cameraPosVec.distanceTo(ping.pos) < 64)
-            ci.setReturnValue(true);
+          if (ent != null && entity.getUuid().equals(ent.getUuid()) && PingCCClient.canOutlineEntity(ent) && cameraPosVec.distanceTo(ping.pos) < 64) ci.setReturnValue(true);
         }
       }
     }

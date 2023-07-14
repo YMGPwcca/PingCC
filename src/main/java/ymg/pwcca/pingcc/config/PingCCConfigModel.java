@@ -9,12 +9,20 @@ public class PingCCConfigModel {
 
   @Nest
   @Expanded
+  public General general = new General();
+
+  public static class General {
+    public boolean getBlockInfo = true;
+    public boolean getEntityInfo = true;
+    public boolean pingThruGrass = true;
+  }
+
+  @Nest
+  @Expanded
   public Vision vision = new Vision();
 
   public static class Vision {
     public Colors pingColor = Colors.WHITE;
-    public boolean getBlockInfo = true;
-    public boolean getEntityInfo = true;
     public boolean showEntityOutline = true;
   }
 
@@ -66,6 +74,7 @@ public class PingCCConfigModel {
     Brimstone,
     Chamber,
     Cypher,
+    Deadlock,
     Fade,
     Gekko,
     Harbor,

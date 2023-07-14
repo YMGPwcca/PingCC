@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -18,9 +17,8 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
@@ -52,9 +50,7 @@ public class PingCCClient implements ClientModInitializer {
 
   public static List<PingData> pingList = new ArrayList<>();
   private static boolean queuePing = false;
-
-  private static boolean pinged = false;
-  private static Timer tempTimer;
+  private static Timer tempTimer = null;
 
   @Override
   public void onInitializeClient() {
@@ -62,27 +58,20 @@ public class PingCCClient implements ClientModInitializer {
 
     registerSoundEvents();
 
-    KeyBinding keyPing = KeyBindingHelper.registerKeyBinding(new KeyBinding("pingcc.key.mark-location", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5, "pingcc.entityName"));
+    KeyBinding keyPing = KeyBindingHelper.registerKeyBinding(new KeyBinding("pingcc.key.mark-location", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5, "pingcc.name"));
 
     ClientPlayNetworking.registerGlobalReceiver(PingCC.SERVER_TO_CLIENT, PingCCClient::onReceivePing);
     ClientTickEvents.END_CLIENT_TICK.register(client -> {
-      if (keyPing.wasPressed()) {
-        if (!pinged) {
-          queuePing = true;
-          pinged = true;
-
-          if (tempTimer == null) {
-            tempTimer = new Timer();
-            tempTimer.schedule(new TimerTask() {
-              @Override
-              public void run() {
-                pinged = false;
-                tempTimer.cancel();
-                tempTimer = null;
-              }
-            }, 1000);
+      if (keyPing.wasPressed() && tempTimer == null) {
+        queuePing = true;
+        tempTimer = new Timer();
+        tempTimer.schedule(new TimerTask() {
+          @Override
+          public void run() {
+            tempTimer.cancel();
+            tempTimer = null;
           }
-        }
+        }, 1000);
       }
     });
 
@@ -109,10 +98,8 @@ public class PingCCClient implements ClientModInitializer {
 
     MinecraftClient client = MinecraftClient.getInstance();
     HitResult hitResult = RayCasting.traceDirectional(client.player.getRotationVec(tickDelta), tickDelta, 256, client.player.isSneaking(), false);
-    if (hitResult.getType() == HitResult.Type.BLOCK && client.world.getBlockState(((BlockHitResult) hitResult).getBlockPos()).isOf(Blocks.TALL_GRASS)) hitResult = RayCasting.traceDirectional(client.player.getRotationVec(tickDelta), tickDelta, 256, client.player.isSneaking(), true);
 
     if (hitResult == null || hitResult.getType() == HitResult.Type.MISS) {
-      pinged = false;
       tempTimer.cancel();
       tempTimer = null;
       return;
@@ -140,36 +127,14 @@ public class PingCCClient implements ClientModInitializer {
       packet.writeString(((EntityHitResult) hitResult).getEntity().getName().getString());
     }
     else {
-      boolean isEntity = false;
-      String entityName = null;
-      Vec3d entityPos = null;
-      for (Entity entity : client.world.getEntities()) {
-        if (!(entity instanceof LivingEntity) && entity.getBoundingBox().contains(hitResult.getPos())) {
-          isEntity = true;
-          entityName = entity instanceof BoatEntity ? ((BoatEntity) entity).asItem().getName().getString() : entity.getName().getString();
-          entityPos = entity.getPos();
+      BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
+      BlockEntity blockEntity = client.world.getBlockEntity(blockPos);
+      Block block = client.world.getBlockState(blockPos).getBlock();
 
-          break;
-        }
-      }
-
-      if (!isEntity) {
-        BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
-        BlockEntity blockEntity = client.world.getBlockEntity(blockPos);
-        Block block = client.world.getBlockState(blockPos).getBlock();
-
-        packet.writeInt(2);
-        packet.writeBlockHitResult((BlockHitResult) hitResult);
-        if (blockEntity instanceof BannerBlockEntity && ((BannerBlockEntity) blockEntity).hasCustomName()) packet.writeString(Objects.requireNonNull(((BannerBlockEntity) blockEntity).getCustomName()).getString());
-        else packet.writeString(block.getName().getString());
-      }
-      else {
-        packet.writeInt(3);
-        packet.writeDouble(entityPos.x);
-        packet.writeDouble(entityPos.y);
-        packet.writeDouble(entityPos.z);
-        packet.writeString(entityName);
-      }
+      packet.writeInt(2);
+      packet.writeBlockHitResult((BlockHitResult) hitResult);
+      if (blockEntity instanceof BannerBlockEntity && ((BannerBlockEntity) blockEntity).hasCustomName()) packet.writeString(Objects.requireNonNull(((BannerBlockEntity) blockEntity).getCustomName()).getString());
+      else packet.writeString(block.getName().getString());
     }
 
     ClientPlayNetworking.send(PingCC.CLIENT_TO_SERVER, packet);
@@ -190,13 +155,19 @@ public class PingCCClient implements ClientModInitializer {
     int pingType = buf.readInt();
     UUID pingEntity = pingType == 1 ? buf.readUuid() : null;
     BlockHitResult pingBlock = pingType == 2 ? buf.readBlockHitResult() : null;
-    Vec3d pingInanimateEntity = pingType == 3 ? new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()) : null;
     String name = buf.readString();
 
     client.execute(() -> {
-      pingList.add(new PingData(pingSender, pingColor, agent, pingPos, pingEntity, pingBlock, pingInanimateEntity, name, client.world.getTime()));
+      pingList.add(new PingData(pingSender, pingColor, agent, pingPos, pingEntity, pingBlock, name, client.world.getTime()));
 
-      DirectionalSoundInstance directionalSoundInstance = new DirectionalSoundInstance(SoundEvent.of(Identifier.of("pingcc", agent.toString().toLowerCase() + (Math.random() > 0.5 ? 1 : 2))), SoundCategory.PLAYERS, PingCCClient.CONFIG.audio.pingVolume() / 100f, 1f, 0, senderPos);
+      DirectionalSoundInstance directionalSoundInstance = new DirectionalSoundInstance(
+          SoundEvent.of(Identifier.of("pingcc", agent.toString().toLowerCase() + (new Random().nextInt(1, 3)))),
+          SoundCategory.PLAYERS,
+          PingCCClient.CONFIG.audio.pingVolume() / 100f,
+          1f,
+          0,
+          senderPos
+      );
 
       if (directionalSoundInstance.getMappedDistance() >= 15.0) return;
 
@@ -214,10 +185,7 @@ public class PingCCClient implements ClientModInitializer {
       if (ping.pingEntity != null) {
         Entity ent = Iterables.tryFind(world.getEntities(), entity -> entity.getUuid().equals(ping.pingEntity)).orNull();
 
-        if (ent != null) {
-          if (ent instanceof ItemEntity itemEnt) ping.itemStack = itemEnt.getStack().copy();
-          ping.pos = ent.getLerpedPos(tickDelta).add(0.0, ent.getBoundingBox().getYLength(), 0.0);
-        }
+        if (canOutlineEntity(ent)) ping.pos = ent.getLerpedPos(tickDelta).add(0.0, ent.getBoundingBox().getYLength(), 0.0);
       }
 
       ping.screenPos = MathHelper.project3Dto2D(ping.pos, modelViewMatrix, projectionMatrix);
@@ -225,5 +193,13 @@ public class PingCCClient implements ClientModInitializer {
     }
 
     pingList.removeIf(p -> p.aliveTime > 5 * 20); // 5 seconds * 20tick
+  }
+
+  public static boolean canOutlineEntity(Entity entity) {
+    return entity instanceof LivingEntity
+        || entity instanceof ItemEntity
+        || entity instanceof BoatEntity
+        || entity instanceof AbstractMinecartEntity
+        || entity instanceof TntEntity;
   }
 }

@@ -1,16 +1,13 @@
 package ymg.pwcca.pingcc.render;
 
-import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.core.Color;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -39,8 +36,13 @@ public class PingHUD implements HudRenderCallback {
 
       PlayerEntity player = MinecraftClient.getInstance().player;
       if (ping.pingEntity != null && ping.pingEntity.equals(player.getUuid())) {
-        player.sendMessage(MutableText.of(TextContent.EMPTY).append(Text.literal(ping.senderName).formatted(ping.pingColor)).append(Text.translatable("text.message.ping"))
-            .append(Text.translatable("text.message.ping.you")), true);
+        player.sendMessage(
+            MutableText.of(TextContent.EMPTY)
+                       .append(Text.literal(ping.senderName).formatted(ping.pingColor))
+                       .append(Text.translatable("text.message.ping"))
+                       .append(Text.translatable("text.message.ping.you")),
+            true
+        );
         continue;
       }
 
@@ -75,24 +77,14 @@ public class PingHUD implements HudRenderCallback {
 
       // display entity/block name and its position when the player is looking at the ping, otherwise display ping sender name
       boolean isCrosshairInlineWithPing = isScreenCenter(ping.screenPos, client.getWindow());
+      boolean canShowInfo = (ping.pingBlock != null && PingCCClient.CONFIG.general.getBlockInfo()) || (ping.pingEntity != null && PingCCClient.CONFIG.general.getEntityInfo());
+      boolean showInfo = isCrosshairInlineWithPing && canShowInfo;
 
-      String entityOrBlockName = null, entityOrBlockPos = null;
-      if (ping.pingBlock != null && PingCCClient.CONFIG.vision.getBlockInfo()) {
-        entityOrBlockName = ping.name;
-        entityOrBlockPos = ping.pingBlock.getBlockPos().toShortString();
-      }
-      else if (ping.pingEntity != null && PingCCClient.CONFIG.vision.getEntityInfo()) {
-        Entity entity = Iterables.tryFind(client.world.getEntities(), e -> e.getUuid().equals(ping.pingEntity)).orNull();
-        entityOrBlockName = entity != null ? ping.name : Text.translatable(Blocks.AIR.getTranslationKey()).getString();
-        entityOrBlockPos = entity != null ? entity.getBlockPos().toShortString() : String.format("%dm", (int) distance);
-      }
-      else if (ping.pingInanimateEntity != null && PingCCClient.CONFIG.vision.getEntityInfo()) {
-        entityOrBlockName = ping.name;
-        Vec3d pos = ping.pingInanimateEntity;
-        entityOrBlockPos = castDoubleToInt(pos.getX()) + ", " + castDoubleToInt(pos.getY()) + ", " + castDoubleToInt(pos.getZ());
-      }
+      String pos = ping.pingBlock != null
+          ? ping.pingBlock.getBlockPos().toShortString()
+          : String.format("%d, %d, %d", ((int) ping.pos.getX()), ((int) ping.pos.getY()), ((int) ping.pos.getZ()));
 
-      String nameText = isCrosshairInlineWithPing && entityOrBlockName != null ? ping.name : ping.senderName;
+      String nameText = showInfo ? ping.name : ping.senderName;
       int nameTextWidth = client.textRenderer.getWidth(nameText);
       stack.scale(0.65f, 0.65f, 1f);
       stack.translate(-nameTextWidth / 2f, -14f, 0);
@@ -108,7 +100,7 @@ public class PingHUD implements HudRenderCallback {
       stack.translate(nameTextWidth / 2f, 0, 0);
 
       // distance text
-      String distanceText = isCrosshairInlineWithPing && entityOrBlockPos != null ? entityOrBlockPos : String.format("%dm", (int) distance);
+      String distanceText = showInfo ? pos : String.format("%dm", (int) distance);
       int distanceTextWidth = client.textRenderer.getWidth(distanceText);
       stack.translate(-distanceTextWidth / 2f, 27f, 0);
 
@@ -163,12 +155,5 @@ public class PingHUD implements HudRenderCallback {
 
     double luma = (0.2126 * red) + (0.7152 * green) + (0.0722 * blue);
     return luma < 100;
-  }
-
-  private int castDoubleToInt(double d) {
-    String dS = String.valueOf(d);
-    int index = dS.indexOf(".") + 1;
-    if (Integer.parseInt(dS.substring(index, index + 1)) > 5) return (int) Math.round(d);
-    return (int) d;
   }
 }

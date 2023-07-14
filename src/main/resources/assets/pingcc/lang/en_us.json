@@ -2,6 +2,14 @@
   "pingcc.name": "PingCC",
   "text.config.pingcc-config.title": "PingCC Config",
 
+  "text.config.pingcc-config.category.general": "General",
+  "text.config.pingcc-config.option.general.getBlockInfo": "Get block info",
+  "text.config.pingcc-config.option.general.getBlockInfo.tooltip": "Get block name and its position when looking at the ping",
+  "text.config.pingcc-config.option.general.getEntityInfo": "Get entity info",
+  "text.config.pingcc-config.option.general.getEntityInfo.tooltip": "Get entity name and its position when looking at the ping",
+  "text.config.pingcc-config.option.general.pingThruGrass": "Ping Through Grass",
+  "text.config.pingcc-config.option.general.pingThruGrass.tooltip": "Make your ping not hit Tall Grass/Grass when ping",
+
   "text.config.pingcc-config.category.vision": "Vision",
   "text.config.pingcc-config.option.vision.pingColor": "Ping Color",
   "text.config.pingcc-config.enum.colors.dark_blue": { "text": "█", "color": "#0000AA" },
@@ -19,10 +27,6 @@
   "text.config.pingcc-config.enum.colors.light_purple": { "text": "█", "color": "#FF55FF" },
   "text.config.pingcc-config.enum.colors.yellow": { "text": "█", "color": "#FFFF55" },
   "text.config.pingcc-config.enum.colors.white": { "text": "█", "color": "#FFFFFF" },
-  "text.config.pingcc-config.option.vision.getBlockInfo": "Get block info",
-  "text.config.pingcc-config.option.vision.getBlockInfo.tooltip": "Get block name and its position when looking at the ping",
-  "text.config.pingcc-config.option.vision.getEntityInfo": "Get entity info",
-  "text.config.pingcc-config.option.vision.getEntityInfo.tooltip": "Get entity name and its position when looking at the ping",
   "text.config.pingcc-config.option.vision.showEntityOutline": "Show entity outline",
   "text.config.pingcc-config.option.vision.showEntityOutline.tooltip": "Show entity outline when you are closer than 64 blocks from it",
 
@@ -64,6 +68,13 @@
     { "text": "\uD83D\uDCF8", "color": "#28FFBF" },
     { "text": "]", "color": "gray" },
     " Cypher"
+  ],
+  "text.config.pingcc-config.enum.agents.deadlock": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDEA2", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Deadlock"
   ],
   "text.config.pingcc-config.enum.agents.fade": [
     "",
