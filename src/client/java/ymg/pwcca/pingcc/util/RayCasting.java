@@ -81,6 +81,6 @@ public class RayCasting {
   private static boolean isGrass(BlockHitResult blockHitResult) {
     World world = MinecraftClient.getInstance().world;
     BlockPos pos = blockHitResult.getBlockPos();
-    return world.getBlockState(pos).isOf(Blocks.TALL_GRASS) || world.getBlockState(pos).isOf(Blocks.GRASS);
+    return world.getBlockState(pos).isOf(Blocks.TALL_GRASS) || world.getBlockState(pos).isOf(Blocks.SHORT_GRASS);
   }
 }

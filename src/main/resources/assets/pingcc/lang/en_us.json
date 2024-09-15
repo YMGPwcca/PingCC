@@ -62,6 +62,13 @@
     { "text": "]", "color": "gray" },
     " Chamber"
   ],
+  "text.config.pingcc-config.enum.agents.clove": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDD8B", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Clove"
+  ],
   "text.config.pingcc-config.enum.agents.cypher": [
     "",
     { "text": "[", "color": "gray" },
@@ -96,6 +103,13 @@
     { "text": "\uD83C\uDF0A", "color": "#28FFBF" },
     { "text": "]", "color": "gray" },
     " Harbor"
+  ],
+  "text.config.pingcc-config.enum.agents.iso": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83D\uDD2B", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Iso"
   ],
   "text.config.pingcc-config.enum.agents.jett": [
     "",
@@ -180,6 +194,13 @@
     { "text": "\uD83D\uDC80", "color": "#28FFBF" },
     { "text": "]", "color": "gray" },
     " Viper"
+  ],
+  "text.config.pingcc-config.enum.agents.vyse": [
+    "",
+    { "text": "[", "color": "gray" },
+    { "text": "\uD83E\uDD40", "color": "#28FFBF" },
+    { "text": "]", "color": "gray" },
+    " Vyse"
   ],
   "text.config.pingcc-config.enum.agents.yoru": [
     "",

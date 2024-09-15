@@ -39,6 +39,16 @@
       "pingcc:chamber2"
     ]
   },
+  "clove1": {
+    "sounds": [
+      "pingcc:clove1"
+    ]
+  },
+  "clove2": {
+    "sounds": [
+      "pingcc:clove2"
+    ]
+  },
   "cypher1": {
     "sounds": [
       "pingcc:cypher1"
@@ -87,6 +97,16 @@
   "harbor2": {
     "sounds": [
       "pingcc:harbor2"
+    ]
+  },
+  "iso1": {
+    "sounds": [
+      "pingcc:iso1"
+    ]
+  },
+  "iso2": {
+    "sounds": [
+      "pingcc:iso2"
     ]
   },
   "jett1": {
@@ -207,6 +227,16 @@
   "viper2": {
     "sounds": [
       "pingcc:viper2"
+    ]
+  },
+  "vyse1": {
+    "sounds": [
+      "pingcc:vyse1"
+    ]
+  },
+  "vyse2": {
+    "sounds": [
+      "pingcc:vyse2"
     ]
   },
   "yoru1": {

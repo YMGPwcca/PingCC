@@ -73,11 +73,13 @@ public class PingCCConfigModel {
     Breach,
     Brimstone,
     Chamber,
+    Clove,
     Cypher,
     Deadlock,
     Fade,
     Gekko,
     Harbor,
+    Iso,
     Jett,
     Kayo,
     Killjoy,
@@ -90,6 +92,7 @@ public class PingCCConfigModel {
     Skye,
     Sova,
     Viper,
+    Vyse,
     Yoru
   }
 }

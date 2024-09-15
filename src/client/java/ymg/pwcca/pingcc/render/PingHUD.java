@@ -6,12 +6,13 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.PlainTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
@@ -20,14 +21,18 @@ import org.joml.Vector4f;
 import ymg.pwcca.pingcc.PingCCClient;
 import ymg.pwcca.pingcc.util.PingData;
 
+import java.util.Objects;
+import java.util.UUID;
+
 public class PingHUD implements HudRenderCallback {
 
-  private static final Identifier PING_ICON = new Identifier("pingcc", "textures/ping_icon.png");
+  private static final Identifier PING_ICON = Identifier.of("pingcc", "textures/ping_icon.png");
 
   @Override
-  public void onHudRender(DrawContext context, float tickDelta) {
+  public void onHudRender(DrawContext context, RenderTickCounter tickCounter) {
     MinecraftClient client = MinecraftClient.getInstance();
     MatrixStack stack = context.getMatrices();
+    float tickDelta = tickCounter.getTickDelta(false);
     double uiScale = client.getWindow().getScaleFactor();
     Vec3d cameraPosVec = client.player.getCameraPosVec(tickDelta);
 
@@ -35,13 +40,13 @@ public class PingHUD implements HudRenderCallback {
       if (ping.screenPos == null) continue;
 
       PlayerEntity player = MinecraftClient.getInstance().player;
-      if (ping.pingEntity != null && ping.pingEntity.equals(player.getUuid())) {
+      if (ping.hitEntity != null && ping.hitEntity.equals(player.getUuid())) {
         player.sendMessage(
-            MutableText.of(TextContent.EMPTY)
-                       .append(Text.literal(ping.senderName).formatted(ping.pingColor))
-                       .append(Text.translatable("text.message.ping"))
-                       .append(Text.translatable("text.message.ping.you")),
-            true
+          MutableText.of(PlainTextContent.EMPTY)
+            .append(Text.literal(ping.senderUsername).formatted(ping.pingColor))
+            .append(Text.translatable("text.message.ping"))
+            .append(Text.translatable("text.message.ping.you")),
+          true
         );
         continue;
       }
@@ -54,8 +59,8 @@ public class PingHUD implements HudRenderCallback {
       boolean isTooDark = isColorTooDark(pingColor);
       int shadow = ColorHelper.Argb.getArgb(200, 255, 255, 255);
 
-      // probably pos data
-      double distance = cameraPosVec.distanceTo(ping.pos);
+      // probably hitPos data
+      double distance = cameraPosVec.distanceTo(ping.hitPos);
       Vector4f screenPos = screenPosWindowed(ping.screenPos, client.getWindow());
 
       // centralize ping
@@ -77,14 +82,12 @@ public class PingHUD implements HudRenderCallback {
 
       // display entity/block name and its position when the player is looking at the ping, otherwise display ping sender name
       boolean isCrosshairInlineWithPing = isScreenCenter(ping.screenPos, client.getWindow());
-      boolean canShowInfo = (ping.pingBlock != null && PingCCClient.CONFIG.general.getBlockInfo()) || (ping.pingEntity != null && PingCCClient.CONFIG.general.getEntityInfo());
+      boolean canShowInfo = (Objects.equals(ping.hitEntity, new UUID(0, 0)) && PingCCClient.CONFIG.general.getBlockInfo()) || (ping.hitEntity != null && PingCCClient.CONFIG.general.getEntityInfo());
       boolean showInfo = isCrosshairInlineWithPing && canShowInfo;
 
-      String pos = ping.pingBlock != null
-          ? ping.pingBlock.getBlockPos().toShortString()
-          : String.format("%d, %d, %d", ((int) ping.pos.getX()), ((int) ping.pos.getY()), ((int) ping.pos.getZ()));
+      String pos = String.format("%d, %d, %d", ((int) ping.hitPos.getX()), ((int) ping.hitPos.getY()), ((int) ping.hitPos.getZ()));
 
-      String nameText = showInfo ? ping.name : ping.senderName;
+      String nameText = showInfo ? ping.hitName : ping.senderUsername;
       int nameTextWidth = client.textRenderer.getWidth(nameText);
       stack.scale(0.65f, 0.65f, 1f);
       stack.translate(-nameTextWidth / 2f, -14f, 0);
